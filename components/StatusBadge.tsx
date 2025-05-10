@@ -3,9 +3,10 @@ import Image from "next/image";
 
 import { StatusIcon } from "@/constants";
 
+type Status = "scheduled" | "pending" | "cancelled"; // Ensure Status is a union of valid strings
+
 export const StatusBadge = ({ status }: { status: Status }) => {
-  const displayStatus = status;
-  const styleStatus = status;
+  const styleStatus: Status = status; // Explicitly define styleStatus as Status
 
   return (
     <div
@@ -17,7 +18,7 @@ export const StatusBadge = ({ status }: { status: Status }) => {
     >
       <Image
         src={StatusIcon[styleStatus]}
-        alt="doctor"
+        alt="status icon"
         width={24}
         height={24}
         className="h-fit w-3"
@@ -29,7 +30,7 @@ export const StatusBadge = ({ status }: { status: Status }) => {
           "text-red-500": styleStatus === "cancelled",
         })}
       >
-        {displayStatus}
+        {styleStatus}
       </p>
     </div>
   );
