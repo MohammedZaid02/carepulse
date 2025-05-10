@@ -4,21 +4,8 @@ import Image from "next/image";
 import { StatusIcon } from "@/constants";
 
 export const StatusBadge = ({ status }: { status: Status }) => {
-  // Map Appwrite status values to our application's display values
-  const displayStatus =
-    status === "schedule"
-      ? "scheduled"
-      : status === "canceled"
-        ? "cancelled"
-        : status;
-
-  // Get the correct status for styling
-  const styleStatus =
-    status === "schedule"
-      ? "scheduled"
-      : status === "canceled"
-        ? "cancelled"
-        : status;
+  const displayStatus = status;
+  const styleStatus = status;
 
   return (
     <div
