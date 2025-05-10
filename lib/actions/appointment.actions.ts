@@ -18,11 +18,22 @@ export const createAppointment = async (
   appointment: CreateAppointmentParams
 ) => {
   try {
+    // Convert status values to match Appwrite's expected values
+    const appointmentData = { ...appointment };
+
+    // Map status values correctly
+    if (appointmentData.status === "scheduled") {
+      appointmentData.status = "schedule";
+    } else if (appointmentData.status === "cancelled") {
+      appointmentData.status = "canceled";
+    }
+    // "pending" stays as "pending"
+
     const newAppointment = await databases.createDocument(
       DATABASE_ID!,
       APPOINTMENT_COLLECTION_ID!,
       ID.unique(),
-      appointment
+      appointmentData
     );
 
     revalidatePath("/admin");
@@ -41,26 +52,6 @@ export const getRecentAppointmentList = async () => {
       [Query.orderDesc("$createdAt")]
     );
 
-    // const scheduledAppointments = (
-    //   appointments.documents as Appointment[]
-    // ).filter((appointment) => appointment.status === "scheduled");
-
-    // const pendingAppointments = (
-    //   appointments.documents as Appointment[]
-    // ).filter((appointment) => appointment.status === "pending");
-
-    // const cancelledAppointments = (
-    //   appointments.documents as Appointment[]
-    // ).filter((appointment) => appointment.status === "cancelled");
-
-    // const data = {
-    //   totalCount: appointments.total,
-    //   scheduledCount: scheduledAppointments.length,
-    //   pendingCount: pendingAppointments.length,
-    //   cancelledCount: cancelledAppointments.length,
-    //   documents: appointments.documents,
-    // };
-
     const initialCounts = {
       scheduledCount: 0,
       pendingCount: 0,
@@ -71,12 +62,14 @@ export const getRecentAppointmentList = async () => {
       (acc, appointment) => {
         switch (appointment.status) {
           case "scheduled":
+          case "schedule":
             acc.scheduledCount++;
             break;
           case "pending":
             acc.pendingCount++;
             break;
           case "cancelled":
+          case "canceled":
             acc.cancelledCount++;
             break;
         }
@@ -125,12 +118,23 @@ export const updateAppointment = async ({
   type,
 }: UpdateAppointmentParams) => {
   try {
+    // Convert status values to match Appwrite's expected values
+    const updatedAppointmentData = { ...appointment };
+
+    // Map status values correctly
+    if (updatedAppointmentData.status === "scheduled") {
+      updatedAppointmentData.status = "schedule";
+    } else if (updatedAppointmentData.status === "cancelled") {
+      updatedAppointmentData.status = "canceled";
+    }
+    // "pending" stays as "pending"
+
     // Update appointment to scheduled -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#updateDocument
     const updatedAppointment = await databases.updateDocument(
       DATABASE_ID!,
       APPOINTMENT_COLLECTION_ID!,
       appointmentId,
-      appointment
+      updatedAppointmentData
     );
 
     if (!updatedAppointment) throw Error;
