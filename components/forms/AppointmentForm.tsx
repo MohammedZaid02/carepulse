@@ -91,7 +91,7 @@ export const AppointmentForm = ({
           );
         }
       } else {
-        const appointmentToUpdate = {
+        const appointmentToUpdate: UpdateAppointmentParams = {
           userId,
           appointmentId: appointment?.$id!,
           appointment: {

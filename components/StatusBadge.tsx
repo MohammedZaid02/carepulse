@@ -3,17 +3,12 @@ import Image from "next/image";
 
 import { StatusIcon } from "@/constants";
 
-// Ensure Status includes all possible values that might be passed to the component
-type Status = "scheduled" | "pending" | "cancelled" | "schedule" | "canceled";
+// Import the Status type from the application types
+type Status = "scheduled" | "pending" | "cancelled";
 
 export const StatusBadge = ({ status }: { status: Status }) => {
   // Map Appwrite status values to our application's display values
-  const displayStatus =
-    status === "schedule" || status === "scheduled"
-      ? "scheduled"
-      : status === "canceled" || status === "cancelled"
-      ? "cancelled"
-      : "pending";
+  const displayStatus = status;
 
   return (
     <div
