@@ -3,21 +3,28 @@ import Image from "next/image";
 
 import { StatusIcon } from "@/constants";
 
-type Status = "scheduled" | "pending" | "cancelled"; // Ensure Status is a union of valid strings
+// Ensure Status includes all possible values that might be passed to the component
+type Status = "scheduled" | "pending" | "cancelled" | "schedule" | "canceled";
 
 export const StatusBadge = ({ status }: { status: Status }) => {
-  const styleStatus: Status = status; // Explicitly define styleStatus as Status
+  // Map Appwrite status values to our application's display values
+  const displayStatus =
+    status === "schedule" || status === "scheduled"
+      ? "scheduled"
+      : status === "canceled" || status === "cancelled"
+      ? "cancelled"
+      : "pending";
 
   return (
     <div
       className={clsx("status-badge", {
-        "bg-green-600": styleStatus === "scheduled",
-        "bg-blue-600": styleStatus === "pending",
-        "bg-red-600": styleStatus === "cancelled",
+        "bg-green-600": displayStatus === "scheduled",
+        "bg-blue-600": displayStatus === "pending",
+        "bg-red-600": displayStatus === "cancelled",
       })}
     >
       <Image
-        src={StatusIcon[styleStatus]}
+        src={StatusIcon[displayStatus]}
         alt="status icon"
         width={24}
         height={24}
@@ -25,12 +32,12 @@ export const StatusBadge = ({ status }: { status: Status }) => {
       />
       <p
         className={clsx("text-12-semibold capitalize", {
-          "text-green-500": styleStatus === "scheduled",
-          "text-blue-500": styleStatus === "pending",
-          "text-red-500": styleStatus === "cancelled",
+          "text-green-500": displayStatus === "scheduled",
+          "text-blue-500": displayStatus === "pending",
+          "text-red-500": displayStatus === "cancelled",
         })}
       >
-        {styleStatus}
+        {displayStatus}
       </p>
     </div>
   );
