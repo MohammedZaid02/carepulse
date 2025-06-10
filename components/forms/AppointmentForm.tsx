@@ -43,9 +43,9 @@ export const AppointmentForm = ({
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: appointment ? appointment?.primaryPhysician : "",
+      primaryPhysician: appointment ? appointment.primaryPhysician : "",
       schedule: appointment
-        ? new Date(appointment?.schedule!)
+        ? new Date(appointment.schedule)
         : new Date(Date.now()),
       reason: appointment ? appointment.reason : "",
       note: appointment?.note || "",
@@ -91,10 +91,11 @@ export const AppointmentForm = ({
           );
         }
       } else {
-        const appointmentToUpdate: UpdateAppointmentParams = {
+        const appointmentToUpdate = {
           userId,
           appointmentId: appointment?.$id!,
           appointment: {
+            ...appointment,
             primaryPhysician: values.primaryPhysician,
             schedule: new Date(values.schedule),
             status: status as Status,

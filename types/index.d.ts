@@ -52,6 +52,12 @@ declare type UpdateAppointmentParams = {
   appointmentId: string;
   userId: string;
   timeZone: string;
-  appointment: Appointment;
+  appointment: {
+    primaryPhysician: string;
+    schedule: Date;
+    status: Status;
+    cancellationReason?: string | null;
+    [key: string]: any;
+  };
   type: string;
 };
