@@ -58,8 +58,8 @@ const AdminPage = async () => {
         <DataTable
           columns={columns}
           data={
-            appointments.documents?.filter(
-              (doc: Appointment) => doc && doc.patient && doc.$id
+            (appointments.documents as Appointment[])?.filter(
+              doc => doc && doc.patient && doc.$id
             ) || []
           }
         />
