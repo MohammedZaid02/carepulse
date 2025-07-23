@@ -23,9 +23,9 @@ export const createAppointment = async (
 
     // Map status values correctly
     if (appointmentData.status === "scheduled") {
-      appointmentData.status = "scheduled";
+      appointmentData.status = "schedule";
     } else if (appointmentData.status === "cancelled") {
-      appointmentData.status = "cancelled";
+      appointmentData.status = "canceled";
     }
     // "pending" stays as "pending"
 
@@ -62,12 +62,14 @@ export const getRecentAppointmentList = async () => {
       (acc, appointment) => {
         switch (appointment.status) {
           case "scheduled":
+          case "schedule":
             acc.scheduledCount++;
             break;
           case "pending":
             acc.pendingCount++;
             break;
           case "cancelled":
+          case "canceled":
             acc.cancelledCount++;
             break;
         }
@@ -121,9 +123,9 @@ export const updateAppointment = async ({
 
     // Map status values correctly
     if (updatedAppointmentData.status === "scheduled") {
-      updatedAppointmentData.status = "scheduled";
+      updatedAppointmentData.status = "schedule";
     } else if (updatedAppointmentData.status === "cancelled") {
-      updatedAppointmentData.status = "cancelled";
+      updatedAppointmentData.status = "canceled";
     }
     // "pending" stays as "pending"
 
